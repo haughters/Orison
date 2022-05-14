@@ -4,6 +4,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.google.gson.Gson;
+import org.jhaughton.orison.model.Organisation;
+import org.jhaughton.orison.model.Prayer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +23,10 @@ public class PrayerApp implements RequestHandler<APIGatewayProxyRequestEvent, AP
 
         APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent()
                 .withHeaders(headers);
-        String output = "{ \"content\": \"hello world\"";
+        Organisation organisation = new Organisation("Test Org");
+        Prayer prayer = new Prayer("Test Content", organisation);
+        Gson gson = new Gson();
+        String output = gson.toJson(prayer);
 
         return response
                 .withStatusCode(200)
